@@ -1,6 +1,6 @@
-# OpenCode Desktop
+# FrenixCode Desktop
 
-Native OpenCode desktop app, built with Tauri v2.
+Native FrenixCode desktop app, built with Tauri v2.
 
 ## Prerequisites
 

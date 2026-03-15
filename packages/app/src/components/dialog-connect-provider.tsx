@@ -1,14 +1,14 @@
-import type { ProviderAuthAuthorization } from "@opencode-ai/sdk/v2/client"
-import { Button } from "@opencode-ai/ui/button"
-import { useDialog } from "@opencode-ai/ui/context/dialog"
-import { Dialog } from "@opencode-ai/ui/dialog"
-import { Icon } from "@opencode-ai/ui/icon"
-import { IconButton } from "@opencode-ai/ui/icon-button"
-import { List, type ListRef } from "@opencode-ai/ui/list"
-import { ProviderIcon } from "@opencode-ai/ui/provider-icon"
-import { Spinner } from "@opencode-ai/ui/spinner"
-import { TextField } from "@opencode-ai/ui/text-field"
-import { showToast } from "@opencode-ai/ui/toast"
+import type { ProviderAuthAuthorization } from "@frenixcode/sdk/v2/client"
+import { Button } from "@frenixcode/ui/button"
+import { useDialog } from "@frenixcode/ui/context/dialog"
+import { Dialog } from "@frenixcode/ui/dialog"
+import { Icon } from "@frenixcode/ui/icon"
+import { IconButton } from "@frenixcode/ui/icon-button"
+import { List, type ListRef } from "@frenixcode/ui/list"
+import { ProviderIcon } from "@frenixcode/ui/provider-icon"
+import { Spinner } from "@frenixcode/ui/spinner"
+import { TextField } from "@frenixcode/ui/text-field"
+import { showToast } from "@frenixcode/ui/toast"
 import { createMemo, Match, onCleanup, onMount, Switch } from "solid-js"
 import { createStore, produce } from "solid-js/store"
 import { Link } from "@/components/link"
@@ -269,16 +269,16 @@ export function DialogConnectProvider(props: { provider: string }) {
     return (
       <div class="flex flex-col gap-6">
         <Switch>
-          <Match when={provider().id === "opencode"}>
+          <Match when={provider().id === "frenixcode"}>
             <div class="flex flex-col gap-4">
-              <div class="text-14-regular text-text-base">{language.t("provider.connect.opencodeZen.line1")}</div>
-              <div class="text-14-regular text-text-base">{language.t("provider.connect.opencodeZen.line2")}</div>
+              <div class="text-14-regular text-text-base">{language.t("provider.connect.frenixcodeZen.line1")}</div>
+              <div class="text-14-regular text-text-base">{language.t("provider.connect.frenixcodeZen.line2")}</div>
               <div class="text-14-regular text-text-base">
-                {language.t("provider.connect.opencodeZen.visit.prefix")}
-                <Link href="https://opencode.ai/zen" tabIndex={-1}>
-                  {language.t("provider.connect.opencodeZen.visit.link")}
+                {language.t("provider.connect.frenixcodeZen.visit.prefix")}
+                <Link href="https://frenixcode.dev/zen" tabIndex={-1}>
+                  {language.t("provider.connect.frenixcodeZen.visit.link")}
                 </Link>
-                {language.t("provider.connect.opencodeZen.visit.suffix")}
+                {language.t("provider.connect.frenixcodeZen.visit.suffix")}
               </div>
             </div>
           </Match>

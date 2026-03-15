@@ -6,9 +6,9 @@ import type {
   ProviderAuthResponse,
   ProviderListResponse,
   Todo,
-} from "@opencode-ai/sdk/v2/client"
-import { showToast } from "@opencode-ai/ui/toast"
-import { getFilename } from "@opencode-ai/util/path"
+} from "@frenixcode/sdk/v2/client"
+import { showToast } from "@frenixcode/ui/toast"
+import { getFilename } from "@frenixcode/util/path"
 import {
   createContext,
   getOwner,

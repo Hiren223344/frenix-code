@@ -1,12 +1,12 @@
 import "@/index.css"
-import { I18nProvider } from "@opencode-ai/ui/context"
-import { DialogProvider } from "@opencode-ai/ui/context/dialog"
-import { FileComponentProvider } from "@opencode-ai/ui/context/file"
-import { MarkedProvider } from "@opencode-ai/ui/context/marked"
-import { File } from "@opencode-ai/ui/file"
-import { Font } from "@opencode-ai/ui/font"
-import { Splash } from "@opencode-ai/ui/logo"
-import { ThemeProvider } from "@opencode-ai/ui/theme"
+import { I18nProvider } from "@frenixcode/ui/context"
+import { DialogProvider } from "@frenixcode/ui/context/dialog"
+import { FileComponentProvider } from "@frenixcode/ui/context/file"
+import { MarkedProvider } from "@frenixcode/ui/context/marked"
+import { File } from "@frenixcode/ui/file"
+import { Font } from "@frenixcode/ui/font"
+import { Splash } from "@frenixcode/ui/logo"
+import { ThemeProvider } from "@frenixcode/ui/theme"
 import { MetaProvider } from "@solidjs/meta"
 import { type BaseRouterProps, Navigate, Route, Router } from "@solidjs/router"
 import { type Duration, Effect } from "effect"
@@ -73,7 +73,7 @@ function UiI18nBridge(props: ParentProps) {
 
 declare global {
   interface Window {
-    __OPENCODE__?: {
+    __FRENIXCODE__?: {
       updaterEnabled?: boolean
       deepLinks?: string[]
       wsl?: boolean

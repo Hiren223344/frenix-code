@@ -3,11 +3,11 @@
  */
 export const config = {
   // Base URL
-  baseUrl: "https://opencode.ai",
+  baseUrl: "https://frenixcode.dev",
 
   // GitHub
   github: {
-    repoUrl: "https://github.com/anomalyco/opencode",
+    repoUrl: "https://github.com/Hiren223344/frenix-code",
     starsFormatted: {
       compact: "120K",
       full: "120,000",
@@ -16,8 +16,8 @@ export const config = {
 
   // Social links
   social: {
-    twitter: "https://x.com/opencode",
-    discord: "https://discord.gg/opencode",
+    twitter: "https://x.com/frenixcode",
+    discord: "https://discord.gg/frenixcode",
   },
 
   // Static stats (used on landing page)
