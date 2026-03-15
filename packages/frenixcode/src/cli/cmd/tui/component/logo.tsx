@@ -7,7 +7,7 @@ import { logo, marks } from "@/cli/logo"
 // _ = full shadow cell (space with bg=shadow)
 // ^ = letter top, shadow bottom (▀ with fg=letter, bg=shadow)
 // ~ = shadow top only (▀ with fg=shadow)
-const SHADOW_MARKER = new RegExp(`[${marks}]`)
+const SHADOW_MARKER = marks ? new RegExp(`[${marks}]`) : undefined
 
 export function Logo() {
   const { theme } = useTheme()
@@ -16,6 +16,16 @@ export function Logo() {
     const shadow = tint(theme.background, fg, 0.25)
     const attrs = bold ? TextAttributes.BOLD : undefined
     const elements: JSX.Element[] = []
+
+    if (!SHADOW_MARKER) {
+      elements.push(
+        <text fg={fg} attributes={attrs} selectable={false}>
+          {line}
+        </text>,
+      )
+      return elements
+    }
+
     let i = 0
 
     while (i < line.length) {
