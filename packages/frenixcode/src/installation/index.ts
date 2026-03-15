@@ -233,7 +233,7 @@ export namespace Installation {
 
   export const VERSION = typeof FRENIXCODE_VERSION === "string" ? FRENIXCODE_VERSION : "local"
   export const CHANNEL = typeof FRENIXCODE_CHANNEL === "string" ? FRENIXCODE_CHANNEL : "local"
-  export const USER_AGENT = `frenixcode/${CHANNEL}/${VERSION}/${Flag.FRENIXCODE_CLIENT}`
+  export const USER_AGENT = `frenixcode/${CHANNEL}/${VERSION}/${Flag.OPENCODE_CLIENT}`
 
   export async function latest(installMethod?: Method) {
     const detectedMethod = installMethod || (await method())
