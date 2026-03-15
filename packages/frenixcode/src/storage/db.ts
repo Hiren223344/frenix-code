@@ -30,7 +30,7 @@ const log = Log.create({ service: "db" })
 export namespace Database {
   export const Path = iife(() => {
     const channel = Installation.CHANNEL
-    if (["latest", "beta"].includes(channel) || Flag.FRENIXCODE_DISABLE_CHANNEL_DB)
+    if (["latest", "beta"].includes(channel) || Flag.OPENCODE_DISABLE_CHANNEL_DB)
       return path.join(Global.Path.data, "frenixcode.db")
     const safe = channel.replace(/[^a-zA-Z0-9._-]/g, "-")
     return path.join(Global.Path.data, `frenixcode-${safe}.db`)
@@ -105,7 +105,7 @@ export namespace Database {
         count: entries.length,
         mode: typeof FRENIXCODE_MIGRATIONS !== "undefined" ? "bundled" : "dev",
       })
-      if (Flag.FRENIXCODE_SKIP_MIGRATIONS) {
+      if (Flag.OPENCODE_SKIP_MIGRATIONS) {
         for (const item of entries) {
           item.sql = "select 1;"
         }

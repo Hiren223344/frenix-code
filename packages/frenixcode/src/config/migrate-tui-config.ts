@@ -135,14 +135,14 @@ async function backupAndStripLegacy(file: string, source: string) {
 }
 
 async function frenixcodeFiles(input: { directories: string[]; managed: string }) {
-  const project = Flag.FRENIXCODE_DISABLE_PROJECT_CONFIG
+  const project = Flag.OPENCODE_DISABLE_PROJECT_CONFIG
     ? []
     : await ConfigPaths.projectFiles("frenixcode", Instance.directory, Instance.worktree)
   const files = [...project, ...ConfigPaths.fileInDirectory(Global.Path.config, "frenixcode")]
   for (const dir of unique(input.directories)) {
     files.push(...ConfigPaths.fileInDirectory(dir, "frenixcode"))
   }
-  if (Flag.FRENIXCODE_CONFIG) files.push(Flag.FRENIXCODE_CONFIG)
+  if (Flag.OPENCODE_CONFIG) files.push(Flag.OPENCODE_CONFIG)
   files.push(...ConfigPaths.fileInDirectory(input.managed, "frenixcode"))
 
   const existing = await Promise.all(

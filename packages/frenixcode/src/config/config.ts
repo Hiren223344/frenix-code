@@ -115,13 +115,13 @@ export namespace Config {
     result = mergeConfigConcatArrays(result, await global())
 
     // Custom config path overrides global config.
-    if (Flag.FRENIXCODE_CONFIG) {
-      result = mergeConfigConcatArrays(result, await loadFile(Flag.FRENIXCODE_CONFIG))
-      log.debug("loaded custom config", { path: Flag.FRENIXCODE_CONFIG })
+    if (Flag.OPENCODE_CONFIG) {
+      result = mergeConfigConcatArrays(result, await loadFile(Flag.OPENCODE_CONFIG))
+      log.debug("loaded custom config", { path: Flag.OPENCODE_CONFIG })
     }
 
     // Project config overrides global and remote config.
-    if (!Flag.FRENIXCODE_DISABLE_PROJECT_CONFIG) {
+    if (!Flag.OPENCODE_DISABLE_PROJECT_CONFIG) {
       for (const file of await ConfigPaths.projectFiles("frenixcode", Instance.directory, Instance.worktree)) {
         result = mergeConfigConcatArrays(result, await loadFile(file))
       }
@@ -134,14 +134,14 @@ export namespace Config {
     const directories = await ConfigPaths.directories(Instance.directory, Instance.worktree)
 
     // .frenixcode directory config overrides (project and global) config sources.
-    if (Flag.FRENIXCODE_CONFIG_DIR) {
-      log.debug("loading config from FRENIXCODE_CONFIG_DIR", { path: Flag.FRENIXCODE_CONFIG_DIR })
+    if (Flag.OPENCODE_CONFIG_DIR) {
+      log.debug("loading config from FRENIXCODE_CONFIG_DIR", { path: Flag.OPENCODE_CONFIG_DIR })
     }
 
     const deps = []
 
     for (const dir of unique(directories)) {
-      if (dir.endsWith(".frenixcode") || dir === Flag.FRENIXCODE_CONFIG_DIR) {
+      if (dir.endsWith(".frenixcode") || dir === Flag.OPENCODE_CONFIG_DIR) {
         for (const file of ["frenixcode.jsonc", "frenixcode.json"]) {
           log.debug(`loading config from ${path.join(dir, file)}`)
           result = mergeConfigConcatArrays(result, await loadFile(path.join(dir, file)))
@@ -223,8 +223,8 @@ export namespace Config {
       })
     }
 
-    if (Flag.FRENIXCODE_PERMISSION) {
-      result.permission = mergeDeep(result.permission ?? {}, JSON.parse(Flag.FRENIXCODE_PERMISSION))
+    if (Flag.OPENCODE_PERMISSION) {
+      result.permission = mergeDeep(result.permission ?? {}, JSON.parse(Flag.OPENCODE_PERMISSION))
     }
 
     // Backwards compatibility: legacy top-level `tools` config
@@ -249,10 +249,10 @@ export namespace Config {
     }
 
     // Apply flag overrides for compaction settings
-    if (Flag.FRENIXCODE_DISABLE_AUTOCOMPACT) {
+    if (Flag.OPENCODE_DISABLE_AUTOCOMPACT) {
       result.compaction = { ...result.compaction, auto: false }
     }
-    if (Flag.FRENIXCODE_DISABLE_PRUNE) {
+    if (Flag.OPENCODE_DISABLE_PRUNE) {
       result.compaction = { ...result.compaction, prune: false }
     }
 
@@ -307,7 +307,7 @@ export namespace Config {
           stdout: err.stdout.toString(),
           stderr: err.stderr.toString(),
         }
-        if (Flag.FRENIXCODE_STRICT_CONFIG_DEPS) {
+        if (Flag.OPENCODE_STRICT_CONFIG_DEPS) {
           log.error("failed to install dependencies", detail)
           throw err
         }
@@ -315,7 +315,7 @@ export namespace Config {
         return
       }
 
-      if (Flag.FRENIXCODE_STRICT_CONFIG_DEPS) {
+      if (Flag.OPENCODE_STRICT_CONFIG_DEPS) {
         log.error("failed to install dependencies", { dir, error: err })
         throw err
       }

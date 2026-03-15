@@ -11,7 +11,7 @@ export const ServeCommand = cmd({
   builder: (yargs) => withNetworkOptions(yargs),
   describe: "starts a headless frenixcode server",
   handler: async (args) => {
-    if (!Flag.FRENIXCODE_SERVER_PASSWORD) {
+    if (!Flag.OPENCODE_SERVER_PASSWORD) {
       console.log("Warning: FRENIXCODE_SERVER_PASSWORD is not set; server is unsecured.")
     }
     const opts = await resolveNetworkOptions(args)

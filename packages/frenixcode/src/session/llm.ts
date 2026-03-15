@@ -211,7 +211,7 @@ export namespace LLM {
               "x-frenixcode-project": Instance.project.id,
               "x-frenixcode-session": input.sessionID,
               "x-frenixcode-request": input.user.id,
-              "x-frenixcode-client": Flag.FRENIXCODE_CLIENT,
+              "x-frenixcode-client": Flag.OPENCODE_CLIENT,
             }
           : input.model.providerID !== "anthropic"
             ? {
