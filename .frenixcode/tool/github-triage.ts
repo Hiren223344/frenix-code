@@ -1,5 +1,5 @@
 /// <reference path="../env.d.ts" />
-import { tool } from "@opencode-ai/plugin"
+import { tool } from "@frenixcode/plugin"
 import DESCRIPTION from "./github-triage.txt"
 
 const TEAM = {
@@ -53,8 +53,8 @@ export default tool({
   },
   async execute(args) {
     const issue = getIssueNumber()
-    const owner = "anomalyco"
-    const repo = "opencode"
+    const owner = "Hiren223344"
+    const repo = "frenix-code"
 
     const results: string[] = []
     let labels = [...new Set(args.labels.map((x) => (x === "desktop" ? "web" : x)))]

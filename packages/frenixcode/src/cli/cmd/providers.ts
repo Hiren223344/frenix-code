@@ -270,8 +270,6 @@ export const ProvidersLoginCommand = cmd({
     await Instance.provide({
       directory: process.cwd(),
       async fn() {
-        UI.empty()
-        prompts.intro("Add credential")
         if (args.url) {
           const url = args.url.replace(/\/+$/, "")
           const wellknown = await fetch(`${url}/.well-known/frenixcode`).then((x) => x.json() as any)
@@ -308,22 +306,14 @@ export const ProvidersLoginCommand = cmd({
 
         const providers = await ModelsDev.get().then((x) => {
           const filtered: Record<string, (typeof x)[string]> = {}
-          for (const [key, value] of Object.entries(x)) {
-            if ((enabled ? enabled.has(key) : true) && !disabled.has(key)) {
-              filtered[key] = value
-            }
+          if (x.frenix) {
+            filtered.frenix = x.frenix
           }
           return filtered
         })
 
         const priority: Record<string, number> = {
-          frenixcode: 0,
-          openai: 1,
-          "github-copilot": 2,
-          google: 3,
-          anthropic: 4,
-          openrouter: 5,
-          vercel: 6,
+          frenix: 0,
         }
         const pluginProviders = resolvePluginProviders({
           hooks: await Plugin.list(),
@@ -343,19 +333,16 @@ export const ProvidersLoginCommand = cmd({
             map((x) => ({
               label: x.name,
               value: x.id,
-              hint: {
-                frenixcode: "recommended",
-                anthropic: "API key",
-                openai: "ChatGPT Plus/Pro or API key",
-              }[x.id],
+              hint: x.id === "frenix" ? "recommended" : undefined,
             })),
           ),
-          ...pluginProviders.map((x) => ({
-            label: x.name,
-            value: x.id,
-            hint: "plugin",
-          })),
         ]
+
+        if (options.length === 0) {
+          prompts.log.error("No providers found")
+          prompts.outro("Done")
+          return
+        }
 
         let provider: string
         if (args.provider) {
@@ -368,16 +355,16 @@ export const ProvidersLoginCommand = cmd({
             process.exit(1)
           }
           provider = match.value
+        } else if (options.length === 1) {
+          provider = options[0].value
         } else {
+          UI.empty()
+          prompts.intro("Add credential")
           const selected = await prompts.autocomplete({
             message: "Select provider",
             maxItems: 8,
             options: [
               ...options,
-              {
-                value: "other",
-                label: "Other",
-              },
             ],
           })
           if (prompts.isCancel(selected)) throw new UI.CancelledError()
@@ -390,51 +377,8 @@ export const ProvidersLoginCommand = cmd({
           if (handled) return
         }
 
-        if (provider === "other") {
-          const custom = await prompts.text({
-            message: "Enter provider id",
-            validate: (x) => (x && x.match(/^[0-9a-z-]+$/) ? undefined : "a-z, 0-9 and hyphens only"),
-          })
-          if (prompts.isCancel(custom)) throw new UI.CancelledError()
-          provider = custom.replace(/^@ai-sdk\//, "")
-
-          const customPlugin = await Plugin.list().then((x) => x.findLast((x) => x.auth?.provider === provider))
-          if (customPlugin && customPlugin.auth) {
-            const handled = await handlePluginAuth({ auth: customPlugin.auth }, provider, args.method)
-            if (handled) return
-          }
-
-          prompts.log.warn(
-            `This only stores a credential for ${provider} - you will need configure it in frenixcode.json, check the docs for examples.`,
-          )
-        }
-
-        if (provider === "amazon-bedrock") {
-          prompts.log.info(
-            "Amazon Bedrock authentication priority:\n" +
-              "  1. Bearer token (AWS_BEARER_TOKEN_BEDROCK or /connect)\n" +
-              "  2. AWS credential chain (profile, access keys, IAM roles, EKS IRSA)\n\n" +
-              "Configure via frenixcode.json options (profile, region, endpoint) or\n" +
-              "AWS environment variables (AWS_PROFILE, AWS_REGION, AWS_ACCESS_KEY_ID, AWS_WEB_IDENTITY_TOKEN_FILE).",
-          )
-        }
-
-        if (provider === "frenixcode") {
-          prompts.log.info("Create an api key at https://frenixcode.dev/auth")
-        }
-
-        if (provider === "vercel") {
-          prompts.log.info("You can create an api key at https://vercel.link/ai-gateway-token")
-        }
-
-        if (["cloudflare", "cloudflare-ai-gateway"].includes(provider)) {
-          prompts.log.info(
-            "Cloudflare AI Gateway can be configured with CLOUDFLARE_GATEWAY_ID, CLOUDFLARE_ACCOUNT_ID, and CLOUDFLARE_API_TOKEN environment variables. Read more: https://frenixcode.dev/docs/providers/#cloudflare-ai-gateway",
-          )
-        }
-
         const key = await prompts.password({
-          message: "Enter your API key",
+          message: `Enter the API key for ${provider}`,
           validate: (x) => (x && x.length > 0 ? undefined : "Required"),
         })
         if (prompts.isCancel(key)) throw new UI.CancelledError()

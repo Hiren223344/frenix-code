@@ -5,13 +5,6 @@ import { createMemo } from "solid-js"
 
 export const popularProviders = [
   "frenixcode",
-  "frenixcode-go",
-  "anthropic",
-  "github-copilot",
-  "openai",
-  "google",
-  "openrouter",
-  "vercel",
 ]
 const popularProviderSet = new Set(popularProviders)
 
@@ -20,11 +13,11 @@ export function useProviders() {
   const params = useParams()
   const dir = createMemo(() => decode64(params.dir) ?? "")
   const providers = () => {
-    if (dir()) {
-      const [projectStore] = globalSync.child(dir())
-      return projectStore.provider
+    const raw = dir() ? globalSync.child(dir())[0].provider : globalSync.data.provider
+    return {
+      ...raw,
+      all: raw.all.filter((p) => p.id === "frenixcode"),
     }
-    return globalSync.data.provider
   }
   return {
     all: () => providers().all,

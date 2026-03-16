@@ -206,7 +206,7 @@ export namespace LLM {
       maxOutputTokens,
       abortSignal: input.abort,
       headers: {
-        ...(input.model.providerID.startsWith("frenixcode")
+        ...(input.model.providerID.startsWith("frenix")
           ? {
               "x-frenixcode-project": Instance.project.id,
               "x-frenixcode-session": input.sessionID,

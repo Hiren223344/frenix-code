@@ -133,12 +133,12 @@ export const dict = {
   "provider.connect.apiKey.placeholder": "API key",
   "provider.connect.apiKey.required": "API key is required",
   "provider.connect.frenixcodeZen.line1":
-    "FrenixCode Zen gives you access to a curated set of reliable optimized models for coding agents.",
+    "Sign in with Frenix to access your models and workspace.",
   "provider.connect.frenixcodeZen.line2":
-    "With a single API key you'll get access to models such as Claude, GPT, Gemini, GLM and more.",
+    "Frenix provides access to the most powerful AI models for coding.",
   "provider.connect.frenixcodeZen.visit.prefix": "Visit ",
-  "provider.connect.frenixcodeZen.visit.link": "frenixcode.dev/zen",
-  "provider.connect.frenixcodeZen.visit.suffix": " to collect your API key.",
+  "provider.connect.frenixcodeZen.visit.link": "frenixcode.dev",
+  "provider.connect.frenixcodeZen.visit.suffix": " to manage your account.",
   "provider.connect.oauth.code.visit.prefix": "Visit ",
   "provider.connect.oauth.code.visit.link": "this link",
   "provider.connect.oauth.code.visit.suffix":

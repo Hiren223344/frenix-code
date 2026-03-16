@@ -100,7 +100,79 @@ export namespace ModelsDev {
 
   export async function get() {
     const result = await Data()
-    return result as Record<string, Provider>
+    const providers = result as Record<string, Provider>
+    const filtered: Record<string, Provider> = {}
+
+    // Ensure frenix is always there
+    const frenix = providers.frenix || {
+      id: "frenix",
+      name: "Frenix",
+      env: ["FRENIX_API_KEY"],
+      api: "http://localhost:3000/v1",
+      npm: "@ai-sdk/openai-compatible",
+      models: {},
+    }
+
+    // Fetch models from gateway too
+    try {
+      const gres = await fetch("http://localhost:3000/v1/models", {
+        signal: AbortSignal.timeout(1000),
+      })
+      if (gres.ok) {
+        const body = (await gres.json()) as any
+        if (body.data && Array.isArray(body.data)) {
+          for (const m of body.data) {
+            if (m.id && !frenix.models[m.id]) {
+              frenix.models[m.id] = {
+                id: m.id,
+                name: m.name || m.id,
+                release_date: new Date().toISOString().split("T")[0],
+                attachment: true,
+                reasoning: true,
+                temperature: true,
+                tool_call: true,
+                limit: {
+                  context: 128000,
+                  output: 4096,
+                },
+                options: {},
+              }
+            }
+          }
+        }
+      }
+    } catch (e) {
+      // ignore gateway fetch errors
+    }
+
+    // Add default models if list is still empty
+    if (Object.keys(frenix.models).length === 0) {
+      const defaultModels = [
+        { id: "gpt-5-pro", name: "GPT-5 Pro" },
+        { id: "claude-sonnet-4", name: "Claude Sonnet 4" },
+        { id: "big-pickle", name: "Big Pickle (70B)" },
+      ]
+
+      for (const m of defaultModels) {
+        frenix.models[m.id] = {
+          id: m.id,
+          name: m.name,
+          release_date: "2025-05-14",
+          attachment: true,
+          reasoning: true,
+          temperature: true,
+          tool_call: true,
+          limit: {
+            context: 128000,
+            output: 4096,
+          },
+          options: {},
+        }
+      }
+    }
+
+    filtered.frenix = frenix
+    return filtered
   }
 
   export async function refresh() {

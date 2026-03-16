@@ -156,13 +156,13 @@ export namespace Provider {
         },
       }
     },
-    async frenixcode(input) {
+    async frenix(input) {
       const hasKey = await (async () => {
         const env = Env.all()
         if (input.env.some((item) => env[item])) return true
         if (await Auth.get(input.id)) return true
         const config = await Config.get()
-        if (config.provider?.["frenixcode"]?.options?.apiKey) return true
+        if (config.provider?.["frenix"]?.options?.apiKey) return true
         return false
       })()
 
@@ -1349,7 +1349,7 @@ export namespace Provider {
         "gemini-2.5-flash",
         "gpt-5-nano",
       ]
-      if (providerID.startsWith("frenixcode")) {
+      if (providerID.startsWith("frenix")) {
         priority = ["gpt-5-nano"]
       }
       if (providerID.startsWith("github-copilot")) {
@@ -1405,6 +1405,20 @@ export namespace Provider {
     if (cfg.model) return parseModel(cfg.model)
 
     const providers = await list()
+
+    // 1. Check frenix provider first
+    const frenix = providers[ProviderID.frenix]
+    if (frenix) {
+      const [model] = sort(Object.values(frenix.models))
+      if (model) {
+        // Only return if it has models that aren't empty
+        return {
+          providerID: ProviderID.frenix,
+          modelID: model.id,
+        }
+      }
+    }
+
     const recent = (await Filesystem.readJson<{ recent?: { providerID: ProviderID; modelID: ModelID }[] }>(
       path.join(Global.Path.state, "model.json"),
     )

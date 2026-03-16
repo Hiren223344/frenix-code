@@ -30,6 +30,7 @@ import { WebCommand } from "./cli/cmd/web"
 import { PrCommand } from "./cli/cmd/pr"
 import { SessionCommand } from "./cli/cmd/session"
 import { DbCommand } from "./cli/cmd/db"
+import { SigninCommand } from "./cli/cmd/signin"
 import path from "path"
 import { Global } from "./global"
 import { JsonMigration } from "./storage/json-migration"
@@ -129,6 +130,7 @@ let cli = yargs(hideBin(process.argv))
   .usage("\n" + UI.logo())
   .completion("completion", "generate shell completion script")
   .command(AcpCommand)
+  .command(SigninCommand)
   .command(McpCommand)
   .command(TuiThreadCommand)
   .command(AttachCommand)

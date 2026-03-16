@@ -1,7 +1,7 @@
 ---
 mode: primary
 hidden: true
-model: opencode/minimax-m2.5
+model: frenix/minimax-m2.5
 color: "#44BA81"
 tools:
   "*": false

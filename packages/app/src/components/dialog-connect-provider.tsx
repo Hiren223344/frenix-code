@@ -275,7 +275,7 @@ export function DialogConnectProvider(props: { provider: string }) {
               <div class="text-14-regular text-text-base">{language.t("provider.connect.frenixcodeZen.line2")}</div>
               <div class="text-14-regular text-text-base">
                 {language.t("provider.connect.frenixcodeZen.visit.prefix")}
-                <Link href="https://frenixcode.dev/zen" tabIndex={-1}>
+                <Link href="https://frenixcode.dev" tabIndex={-1}>
                   {language.t("provider.connect.frenixcodeZen.visit.link")}
                 </Link>
                 {language.t("provider.connect.frenixcodeZen.visit.suffix")}
@@ -449,9 +449,6 @@ export function DialogConnectProvider(props: { provider: string }) {
           <ProviderIcon id={props.provider} class="size-5 shrink-0 icon-strong-base" />
           <div class="text-16-medium text-text-strong">
             <Switch>
-              <Match when={props.provider === "anthropic" && method()?.label?.toLowerCase().includes("max")}>
-                {language.t("provider.connect.title.anthropicProMax")}
-              </Match>
               <Match when={true}>{language.t("provider.connect.title", { provider: provider().name })}</Match>
             </Switch>
           </div>

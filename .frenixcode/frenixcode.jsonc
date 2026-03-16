@@ -1,18 +1,38 @@
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "https://frenixcode.dev/config.json",
   "provider": {
-    "opencode": {
-      "options": {},
-    },
+    "frenix": {
+      "options": {}
+    }
   },
   "permission": {
     "edit": {
-      "packages/opencode/migration/*": "deny",
-    },
+      "packages/frenixcode/migration/*": "deny"
+    }
   },
   "mcp": {},
   "tools": {
     "github-triage": false,
     "github-pr-search": false,
-  },
+    "web-screenshot": true,
+    "frenix-audit": true,
+    "frenix-memorize": true,
+    "frenix-bench": true,
+    "frenix-clean": true,
+    "frenix-migrate": true,
+    "frenix-doc": true,
+    "frenix-rebrand": true,
+    "frenix-ai-gen": true,
+    "frenix-security": true,
+    "frenix-ui-gen": true,
+    "frenix-mock": true,
+    "frenix-git": true,
+    "frenix-i18n": true,
+    "frenix-dead": true,
+    "frenix-env": true,
+    "frenix-bundle": true,
+    "frenix-route-gen": true,
+    "frenix-trace": true,
+    "frenix-schema": true
+  }
 }
