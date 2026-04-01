@@ -77,7 +77,7 @@ export namespace Agent {
     const result: Record<string, Info> = {
       build: {
         name: "build",
-        description: "The default agent. Executes tools based on configured permissions.",
+        description: "Standard Fast Mode. Executes tools with precision and zero waste. Powered by the Frenix Master PRO (Antigravity) engine.",
         options: {},
         permission: PermissionNext.merge(
           defaults,
@@ -92,7 +92,7 @@ export namespace Agent {
       },
       plan: {
         name: "plan",
-        description: "Plan mode. Disallows all edit tools.",
+        description: "Elite Plan Mode. Strategic architectural reasoning and second-order thinking. Disallows destructive edits.",
         options: {},
         permission: PermissionNext.merge(
           defaults,

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { font-family: sans-serif; padding: 15px; background: #0f172a; color: white; }
+    .header { font-size: 1.2rem; font-weight: bold; margin-bottom: 20px; color: #38bdf8; }
+    #chat-log { height: 300px; overflow-y: auto; border: 1px solid #334155; padding: 10px; border-radius: 8px; margin-bottom: 10px; }
+    #input-area { display: flex; gap: 8px; }
+    #user-input { flex-grow: 1; padding: 8px; border-radius: 4px; border: 1px solid #334155; background: #1e293b; color: white; }
+    button { padding: 8px 15px; border-radius: 4px; border: none; background: #38bdf8; color: #0f172a; font-weight: bold; cursor: pointer; }
+    .status { font-size: 0.8rem; color: #94a3b8; margin-top: 5px; }
+  </style>
+</head>
+<body>
+  <div class="header">Frenix Browser Agent</div>
+  <div id="chat-log"></div>
+  <div id="input-area">
+    <input type="text" id="user-input" placeholder="Type a command...">
+    <button id="send-btn">Go</button>
+  </div>
+  <div class="status" id="status">Disconnected</div>
+  <script src="sidepanel.js"></script>
+</body>
+</html>

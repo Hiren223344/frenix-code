@@ -21,7 +21,7 @@
 | **M-001** | Playwright Dependency Bloat | Using heavy browser engines for simple screenshots. | Use **System Browser CLI** (`web-screenshot.ts`) + headless mode. | ✅ Resolved |
 | **M-002** | Branding "Pattern Drift" | Leaving "Claude" or "Anthropic" names in skills. | Global "Frenix" rebranding protocol. Auto-rename on skill import. | ✅ Resolved |
 | **M-003** | Node/TS Type Errors in Tools | Missing `@types/node` context in `.ts` scripts. | Use `any` for complex process buffers if typings are unavailable; ensure reference paths. | ✅ Active |
-| **M-004** | Streaming Timeouts | 30s timeout cutting off long streams (OpenRouter/Anthropic). | Implement **Activity-Based Timeouts** (reset on first byte/chunk) in `proxyService.ts`. | 🛠️ In-Progress |
+| **M-004** | Streaming Timeouts | 30s timeout cutting off long streams. | Implement **Activity-Based Sentinel Timeouts** in `proxyService.ts` (Apex Standard). | ✅ Resolved |
 | **M-005** | JSONC Syntax Errors | Trailing commas in `.frenixcode.jsonc`. | Strict JSONC validation; manual check before write. | ✅ Resolved |
 | **M-006** | "Lazy" Prompting | Generic "Helpful Assistant" personas in agents. | Use the **Master-Ultra-Pro spec** in `generate.txt` for all new agents. | ✅ Resolved |
 
@@ -38,4 +38,5 @@
 - [x] Core expertise in **Cloud Native (AWS/GCP)**, **Low-Level/WASM**, and **Advanced Reranking/RAG**.
 - [x] Lightweight native screenshot tool.
 - [x] High-Agency Agent core upgrade (`generate.txt`).
+- [x] Verified Agentic Sovereignty (Create/Modify/Delete self-test passed).
 - [ ] Finalize activity-based timeout validation for V2_Gateway.

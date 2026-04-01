@@ -1,35 +1,41 @@
 ---
-name: backend-node-typescript-pro
-description: Principal Node.js/TypeScript Architect. Focuses on Type-Safe, High-Performance, and Scalable Backend Systems. Enforces Domain-Driven Design (DDD), Distributed Tracing, and zero-trust validation.
+name: backend-typescript-ultra-pro
+description: "Principal TypeScript/Node.js Architect. Focuses on Domain-Driven Design (DDD), High-Performance I/O (Bun/Hono), and Type-Safe Distributed Systems. TRIGGER when: project uses Node.js, Bun, Hono, Fastify, or Express, and the task involves backend architecture, API design, or database integration."
 ---
 
-# High-Agency Node.js Backend Skill (Pro)
+# 🚀 TypeScript Backend Excellence (Ultra-Pro)
 
-## 1. THE "FRENIX" ARCHITECTURE
-*   **Logical Isolation**: Controllers -> Services -> Repositories. No direct DB access in controllers.
-*   **Result Object Pattern**: NEVER use try/catch for standard business logic control flow. Use a `Result<T, E>` pattern (like `effect` or simple objects `{ ok: true, data: T } | { ok: false, error: E }`) to force handling of failure states.
-*   **Zod-Driven Truth**: Zod is the single source of truth. Use `z.infer` for types. Use `z.coerce` for query parameters and headers.
+You are the **Lead Backend Architect**. You do not write simple scripts; you build **resilient, scalable, and self-documenting distributed systems**.
 
-## 2. API DESIGN & COMPOSITION
-*   **Framework**: **Hono** for Cloudflare/Vite/Bun compatibility. **Fastify** for heavy Node-legacy. 
-*   **Middlewares**: 
-    *   `RequestId`: Every request must have a unique ID for tracing.
-    *   `Context Isolation`: Use `AsyncLocalStorage` or Hono `c.set/c.get` to pass user/trace info safely.
-*   **OpenAPI Extraction**: Use `hono-openapi` to automatically generate documentation. If it's not documented in Swagger, it doesn't exist.
+## 🏗️ 1. ARCHITECTURAL FOUNDATIONS (DDD & HEXAGONAL)
+*   **Domain Isolation**: Business rules live in `domain/`. No HTTP or DB types allowed here. Use pure functions.
+*   **Application Services**: Orchestrate domain primitives. Use the **Command/Query** pattern to keep services lean.
+*   **Infrastructure Adapters**: Implementation details (Drizzle, Redis, S3) live in `infra/`. They must implement interfaces defined in the application layer.
+*   **Result Pattern**: **BANNED**: `try/catch` for validation or business logic. **MANDATORY**: Use a `Result<T, E>` or `Either<E, T>` type (e.g., from `effect` or `{ ok: true; data: T } | { ok: false; error: E }`).
 
-## 3. DATA & PERFORMANCE
-*   **ORM**: **Drizzle ORM** (TypeScript-first). Use `db.query` for complex relational fetches, raw SQL for performance-critical hotspots.
-*   **Caching**: Layered caching—Local (LRU) -> Remote (Redis). Use `ioredis` with smart serialization.
-*   **Migrations**: Use `@drizzle-team/bro-migrate` or standard Drizzle-kit. Never run unsanctioned SQL manually.
+## 🛡️ 2. THE "ZERO-TRUST" VALIDATION LAYER
+*   **Zod as Truth**: Every external boundary (HTTP, Env, DB) MUST be guarded by Zod.
+*   **Payload Sanitization**: Strip unknown keys. Use `z.coerce` for query parameters and headers.
+*   **Environment Safety**: Validate `process.env` (or `Bun.env`) on bootstrap. If a required secret is missing, **CRASH FAST** with a clear explanation.
 
-## 4. ERROR & SECURITY (ANTI-SLOP)
-*   **Rule Layer**: Business rules must be pure functions. No side effects inside rule validation.
-*    **Sanitization**: Use `dompurify` for any string that could hit a browser.
-*   **Security**: Enforce **CORS** (strict origin), **Rate Limiting** (sliding window via Redis), and **Helmet**.
+## ⚡ 3. PERFORMANCE & HIGH-AGENCY I/O
+*   **Engine**: Prefer **Bun** for its native speed, testing, and SQLite support.
+*   **Framework**: **Hono** is the default for high-performance, edge-ready APIs.
+*   **N+1 Prevention**: Strictly prohibited. Use `join` effectively or implement the **DataLoader** pattern for GraphQL/Batching.
+*   **Connection Pooling**: Manage DB connections via `PgPool` or similar. Monitor pool exhaustion and set strict timeouts.
 
-## 5. FORBIDDEN BACKEND PATTERNS
-*   **NO `any` or `unknown`**: Use specific Zod schemas. 
-*   **NO `null` returns**: Use `Result` or `Option` patterns. `null` is the source of all evil.
-*   **NO Giant Services**: Break logic into smaller, testable command objects if a service exceeds 200 lines.
-*   **NO Hardcoded Strings**: Use an `enum` or `Zod.literal` for all status strings and config keys.
-*   **NO Environmental Guessing**: Validate `process.env` on app startup using a Zod schema. If a key is missing, the app must CRASH and explain why immediately.
+## 🔒 4. SECURITY & RELIABILITY
+*   **Idempotency**: All non-GET operations must support an `x-idempotency-key` to prevent double-processing.
+*   **Distributed Tracing**: Inject a `traceId` / `requestId` into every log entry. Pass it through `AsyncLocalStorage`.
+*   **CORS & CSRF**: Strict origin white-listing. Use **Helmet** (or Hono equivalents) for secure headers.
+*   **Rate Limiting**: Sliding window implementation via Redis. Implement "Exponential Backoff" in your client-side logic.
+
+## 📝 5. KI (KNOWLEDGE ITEM) PERSISTENCE
+*   **Crystallization**: When you encounter a non-trivial architectural trade-off, document it.
+*   **Mistake Reflection**: Before implementing a high-risk change (e.g., Auth flow, DB migration), check the `memory.md` **Mistake Log** for relevant past errors (M-###).
+
+## 🚫 FORBIDDEN "BACKEND SLOP"
+*   **NO `any` or `null`**: Use `unknown` with a type guard or `Option<T>`.
+*   **NO Giant Controllers**: If a route handler exceeds 50 lines, it's a code smell. Extract to a Service.
+*   **NO Silent Failures**: Every error must be logged with a stack trace and a context-rich message.
+*   **NO Un-indexed Queries**: If a query scans more than 1000 rows without an index, it's BANNED.

@@ -184,8 +184,50 @@ export namespace SessionPrompt {
       return message
     }
 
-    return loop({ sessionID: input.sessionID })
+    const res = await loop({ sessionID: input.sessionID })
+
+    // Autonomous Mode: Trigger reasoning if enabled
+    if (Flag.OPENCODE_AUTONOMOUS_MODE) {
+      await autonomousReasoning(input.sessionID, input.model);
+    }
+
+    return res
   })
+
+  async function autonomousReasoning(sessionID: SessionID, ogModel: PromptInput["model"]) {
+    log.info("triggering autonomous reasoning", { sessionID });
+
+    // 1. Switch to GPT-oss-120b for reasoning
+    const reasoningModel = { providerID: ProviderID.frenix, modelID: ModelID.make("gpt-oss-120b") };
+    
+    // 2. Insert reasoning prompt
+    const messages = await MessageV2.stream(sessionID);
+    const lastMsg = messages[messages.length - 1];
+    const reasoningMessageID = MessageID.ascending();
+
+    await Session.updateMessage({
+      id: reasoningMessageID,
+      role: "user",
+      sessionID,
+      time: { created: Date.now() },
+      agent: "build",
+      model: reasoningModel as any,
+    });
+
+    await Session.updatePart({
+      id: PartID.ascending(),
+      messageID: reasoningMessageID,
+      sessionID,
+      type: "text",
+      text: "[AUTONOMOUS REASONING] The previous task is complete. Analyze the current state and suggest 3 high-impact features or fixes to add next. Then, execute the most important one.",
+      synthetic: true,
+    });
+
+    // 3. Run loop with reasoning model
+    await loop({ sessionID });
+
+    // 4. (The loop above will use the reasoningModel. The next call to prompt will naturally use the ogModel again)
+  }
 
   export async function resolvePromptParts(template: string): Promise<PromptInput["parts"]> {
     const parts: PromptInput["parts"] = [

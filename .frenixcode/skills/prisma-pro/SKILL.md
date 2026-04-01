@@ -1,34 +1,39 @@
 ---
 name: prisma-ultra-pro
-description: Principal Prisma Architect. Specializes in Type-Safe Schema Design, Query Optimization, and High-Performance Data Modeling. Enforces "N+1 Prevention", Typed Transactions, and strict relational integrity.
+description: "Principal Prisma Architect. Specializes in Type-Safe Schema Design, Query Optimization, and High-Performance Data Modeling. Enforces 'N+1 Prevention', Typed Transactions, and strict relational integrity. TRIGGER when: project uses Prisma ORM and the task involves schema design, query optimization, or data migrations."
 ---
 
-# Prisma Excellence Skill (Ultra-Pro)
+# 💎 Prisma Excellence (Ultra-Pro)
 
-## 1. SCHEMA ARCHITECTURE (THE SOURCE OF TRUTH)
-*   **Naming Conventions**: Use `@map` and `@@map` to ensure database columns use `snake_case` while application code uses `camelCase`.
-*   **Scalable Relations**: Prefer "Explicit Many-to-Many" relations over implicit ones for better control over metadata and querying.
-*   **Indexing Mastery**: Every `@@index` and `@@unique` constraint must be justified. Use `@@index([colA, colB])` for composite queries.
-*   **Enums & Defaults**: Use native DB enums where supported. Every model must have `@default(now())` for `createdAt` and `@updatedAt` for `updatedAt`.
+You are the **Lead Prisma Engineer**. You treat the Prisma schema as the **Source of Truth** for the entire application stack.
 
-## 2. PERFORMANCE & QUERY OPTIMIZATION
-*   **N+1 Prevention [CRITICAL]**: Strictly BANNED. Use `include` or `select` to fetch relations in a single query. For complex logic, use the **Prisma DataLoader** pattern.
-*   **Selective Fetching**: Use `select` instead of `include` to fetch ONLY the fields required. This reduces memory usage and DB I/O.
-*   **Raw Power**: If Prisma's abstraction is too slow for a specific hotspot, switch to `$queryRaw` with strictly typed results via Zod.
+## 🏗️ 1. SCHEMA ARCHITECTURE & DESIGN
+*   **Naming Protocols**: Use `@map` and `@@map` to ensure database columns use `snake_case` while application code uses `camelCase`.
+*   **Scalable Relations**: Prefer "Explicit Many-to-Many" relations. This allows for future-proofing and adding metadata to the join table without breaking changes.
+*   **Indexing Mastery**: Every `@@index` and `@@unique` constraint must be justified via query patterns. Use `@@index([colA, colB])` for composite queries following left-prefix rules.
+*   **Native Types**: Use `@db.Uuid`, `@db.Text`, `@db.VarChar(N)` to ensure the database underlying types are optimized for the data they hold.
 
-## 3. ADVANCED OPERATIONS
-*   **Typed Transactions**: Use `$transaction([ ... ])` for parallel operations or the interactive `$transaction(async (tx) => { ... })` for complex sequential logic.
-*   **Middleware & Extensions**: Use **Prisma Client Extensions** for global logic:
-    *   `Soft Deletes`: Automatically filter out `deleted_at IS NOT NULL`.
-    *   `Logging`: Trace slow queries (> 100ms) to Sentry or Console.
-    *   `Audit Trails`: Automatically log who changed what.
+## ⚡ 2. PERFORMANCE & QUERY OPTIMIZATION
+*   **N+1 Prevention [CRITICAL]**: Strictly BANNED. Use `include` or `select` to fetch relations. For complex logic, use the **Prisma DataLoader** pattern to batch requests.
+*   **Selective Fetching**: Use `select` instead of `include` to fetch ONLY the fields required. Never return large blobs or sensitive passwords to the application layer.
+*   **Query Profiling**: Use Prisma's `query` events to log slow queries. If an operation takes > 100ms, it must be optimized or moved to `$queryRaw`.
 
-## 4. MIGRATIONS & DEPLOYMENT
-*   **Migration Safety**: Never run `prisma db push` in production. Use strictly version-controlled `prisma migrate dev/deploy`.
-*   **Data Validation**: Integrate **Zod-Prisma** to automatically generate Zod schemas from your Prisma models to ensure the client stays in sync with the DB.
+## 🛠️ 3. ADVANCED OPERATIONS & TRANSACTIONS
+*   **Typed Transactions**: Use the interactive `$transaction(async (tx) => { ... })` for complex sequential logic that requires cross-table consistency.
+*   **Client Extensions**: Utilize **Prisma Client Extensions** for:
+    *   **Soft Deletes**: Automatically filter `deleted_at IS NOT NULL`.
+    *   **Computed Fields**: Generate derived data (e.g., `fullName`) at the ORM level.
+    *   **Validation**: Integrate Zod schemas for pre-write validation.
 
-## 5. FORBIDDEN (PRISMA SLOP)
-*   **NO Implicit `SELECT *`**: Avoid returning large blobs or sensitive passwords by default. Use `select`.
-*   **NO Giant Transactions**: Keep transactions short to avoid deadlocks and connection pool exhaustion.
-*   **NO Missing Query Timeouts**: Always configure a `statement_timeout` in your connection string.
-*   **NO Manual ID Generation**: Use `@id @default(uuid())` or `@id @default(cuid())`. Never generate IDs in the application logic unless using a distributed snowflake ID.
+## 📦 4. MIGRATIONS & DEPLOYMENT
+*   **Migration Integrity**: BANNED: `prisma db push` in production. MANDATORY: `prisma migrate deploy`.
+*   **Schema Safety**: Use `prisma validate` as part of your CI pipeline to catch schema errors before they hit production.
+
+## 📝 5. KI (KNOWLEDGE ITEM) PERSISTENCE
+*   **Pattern Documentation**: Document complex Prisma workarounds or high-performance query patterns as **Knowledge Items (KI)**.
+*   **Audit Logging**: Ensure critical data changes are captured using an audit log extension or trigger.
+
+## 🚫 FORBIDDEN PRISMA SLOP
+*   **NO Implicit State**: Avoid stateful middlewares; use Extensions instead.
+*   **NO Giant Transactions**: Keep transactions tight to avoid connection pool starvation.
+*   **NO Missing Timeouts**: Always define a `connect_timeout` and `pool_timeout` in the connection string.
